@@ -1,0 +1,209 @@
+---
+config:
+  layout: elk
+---
+flowchart TD
+ subgraph FOUND["FOUNDATIONS (1993-1997)"]
+        F1["Codd [CCS93]"]
+        F1C["OLAP concept"]
+        F2["Gray et al. [GCB+97]"]
+        F2C["Data cube operator"]
+        F3["Chaudhuri & Dayal [CD97]"]
+        F3C["Warehousing overview"]
+  end
+ subgraph CORE["CORE COMPUTATION (1994-1997)"]
+    direction TB
+        FULL["Full Cube Methods"]
+        C1["Sarawagi & Stonebraker [SS94]"]
+        C1C["Chunks"]
+        C2["Zhao et al. [ZDN97]"]
+        C2C["MultiWay (MOLAP)"]
+        C3["Ross & Srivastava [RS97]"]
+        C3C["Sparse cubes"]
+        OPT["Optimization Foundations"]
+        C4["Harinarayan et al. [HRU96]"]
+        C4C["Greedy materialization"]
+        C5@{ label: "Valduriez [Val87]<br>O'Neil &amp; Graefe [OG95]" }
+        C5C["Index Methods"]
+  end
+ subgraph ICE["ICEBERG ERA (1998-2004)"]
+        I1["Fang et al. [FSGM+98]"]
+        I1C["Iceberg queries"]
+        I2["Beyer & Ramakrishnan [BR99]"]
+        I2C["BUC"]
+        I3["Han et al. [HPDW01]"]
+        I3C["H-Cubing"]
+        I4["Xin et al. [XHLW03]"]
+        I4C["Star-Cubing"]
+        I5["Shao et al. [SHX04]"]
+        I5C["MM-Cubing"]
+  end
+ subgraph COMP["COMPRESSION & CONDENSATION (1997-2006)"]
+    direction TB
+        APPROX["Approximation Branch"]
+        P1["Barbara & Sullivan [BS97]"]
+        P1C["Quasi-cubes"]
+        P2["Vitter et al. [VWI98]"]
+        P2C["Wavelet cubes"]
+        P3["Barbara & Wu [BW00]"]
+        P3C["Log-linear models"]
+        CLOSED["Closed Cube Branch"]
+        P4["Wang et al. [WLFY02]"]
+        P4C["Condensed cube"]
+        P5["Sismanis et al. [SDRK02]"]
+        P5C["Dwarf cube"]
+        P6["Lakshmanan et al. [LPH02, LPZ03]"]
+        P6C["Quotient cube"]
+        P7["Xin et al. [XHSL06]"]
+        P7C["C-Cubing"]
+  end
+ subgraph DOM["DOMAIN EXTENSIONS (1998-2009)"]
+        D1["Stefanovic et al. [SHK00]<br>Papadias et al. [PKZT01]"]
+        D1C["Spatial cubes"]
+        D2["Zaiane et al. [ZHL+98]"]
+        D2C["Multimedia cubes"]
+        D3["Lin et al. [LDH+08]<br>Zhang et al. [ZZH09]"]
+        D3C["Text cubes"]
+        D4["Chen et al. [CDH+02]"]
+        D4C["Stream cubes"]
+        D5["Gonzalez et al. [GHLK06]"]
+        D5C["RFID cubes"]
+        D6["Xin et al. [XHCL06]<br>Wu et al. [WXH08, WXMH09]"]
+        D6C["Ranking cubes"]
+  end
+ subgraph MINE["OLAP MINING (1998-2007)"]
+        M1["Han [Han98]"]
+        M1C["OLAM concept"]
+        M2["Sarawagi et al. [SAM98]"]
+        M2C["Discovery-driven exploration"]
+        M3["Chen et al. [CDH+02, CDH+06]"]
+        M3C["Regression cubes"]
+        M4["Chen et al. [CCLR05]"]
+        M4C["Prediction cubes"]
+        M5["Ramakrishnan & Chen [RC07]"]
+        M5C["Exploratory mining"]
+  end
+ subgraph PARALLEL["PARALLEL DEVELOPMENT THREADS"]
+    direction LR
+        T1["Query Optimization<br>[1987-1999]<br>Indices, Top-K,<br>Online Aggregation"]
+        T2["Mining Integration<br>[1998-2007]<br>OLAM, Discovery,<br>Prediction"]
+        T3["Data Type Extensions<br>[1998-2009]<br>Spatial, Text,<br>Stream, RFID"]
+  end
+    START["OLAP & DATA CUBE RESEARCH LANDSCAPE"] --> FOUND
+    F1 --> F1C
+    F2 --> F2C
+    F3 --> F3C
+    FOUND --> CORE
+    FULL --> C1 & C2 & C3
+    C1 --> C1C
+    C2 --> C2C
+    C3 --> C3C
+    OPT --> C4 & C5
+    C4 --> C4C
+    C5 --> C5C
+    CORE --> ICE
+    I1 --> I1C
+    I2 --> I2C
+    I3 --> I3C
+    I4 --> I4C
+    I5 --> I5C
+    ICE --> COMP
+    APPROX --> P1 & P2 & P3
+    P1 --> P1C
+    P2 --> P2C
+    P3 --> P3C
+    CLOSED --> P4 & P5 & P6 & P7
+    P4 --> P4C
+    P5 --> P5C
+    P6 --> P6C
+    P7 --> P7C
+    COMP --> DOM
+    D1 --> D1C
+    D2 --> D2C
+    D3 --> D3C
+    D4 --> D4C
+    D5 --> D5C
+    D6 --> D6C
+    DOM --> MINE
+    M1 --> M1C
+    M2 --> M2C
+    M3 --> M3C
+    M4 --> M4C
+    M5 --> M5C
+    MINE --> PARALLEL
+    C5@{ shape: rect}
+     START:::title
+     F1:::cite
+     F1C:::contrib
+     F2:::cite
+     F2C:::contrib
+     F3:::cite
+     F3C:::contrib
+     FULL:::branch
+     C1:::cite
+     C1C:::contrib
+     C2:::cite
+     C2C:::contrib
+     C3:::cite
+     C3C:::contrib
+     OPT:::branch
+     C4:::cite
+     C4C:::contrib
+     C5:::cite
+     C5C:::contrib
+     I1:::cite
+     I1C:::contrib
+     I2:::cite
+     I2C:::contrib
+     I3:::cite
+     I3C:::contrib
+     I4:::cite
+     I4C:::contrib
+     I5:::cite
+     I5C:::contrib
+     APPROX:::branch
+     P1:::cite
+     P1C:::contrib
+     P2:::cite
+     P2C:::contrib
+     P3:::cite
+     P3C:::contrib
+     CLOSED:::branch
+     P4:::cite
+     P4C:::contrib
+     P5:::cite
+     P5C:::contrib
+     P6:::cite
+     P6C:::contrib
+     P7:::cite
+     P7C:::contrib
+     D1:::cite
+     D1C:::contrib
+     D2:::cite
+     D2C:::contrib
+     D3:::cite
+     D3C:::contrib
+     D4:::cite
+     D4C:::contrib
+     D5:::cite
+     D5C:::contrib
+     D6:::cite
+     D6C:::contrib
+     M1:::cite
+     M1C:::contrib
+     M2:::cite
+     M2C:::contrib
+     M3:::cite
+     M3C:::contrib
+     M4:::cite
+     M4C:::contrib
+     M5:::cite
+     M5C:::contrib
+     T1:::thread
+     T2:::thread
+     T3:::thread
+    classDef title fill:#2C3E50,stroke:#1A252F,stroke-width:3px,color:#ECF0F1,font-size:14px,font-weight:bold
+    classDef cite fill:#9B59B6,stroke:#6C3483,stroke-width:2px,color:#fff,font-size:11px
+    classDef contrib fill:#2ECC71,stroke:#27AE60,stroke-width:2px,color:#fff,font-size:11px
+    classDef branch fill:#E67E22,stroke:#CA6F1E,stroke-width:2px,color:#fff,font-size:12px,font-weight:bold
+    classDef thread fill:#16A085,stroke:#138D75,stroke-width:2px,color:#fff,font-size:11px
