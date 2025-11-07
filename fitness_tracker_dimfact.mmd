@@ -3,7 +3,6 @@ erDiagram
     WORKOUT_SESSION ||--o{ EXERCISE : "exercise_key"
     WORKOUT_SESSION ||--o{ EQUIPMENT : "equipment_key"
     WORKOUT_SESSION ||--o{ LOCATION : "location_key"
-    
     WORKOUT_SESSION {
         int time_key FK
         int exercise_key FK
@@ -14,7 +13,6 @@ erDiagram
         int reps_completed "volume"
         decimal distance_km "for cardio"
     }
-    
     TIME {
         int time_key PK
         date date
@@ -23,9 +21,7 @@ erDiagram
         int month
         string season
         int year
-        string weather "sunny/rainy/cold/hot"
     }
-    
     EXERCISE {
         int exercise_key PK
         string exercise_name "running/pushups/yoga/cycling"
@@ -33,14 +29,12 @@ erDiagram
         string intensity_level "light/moderate/vigorous"
         string muscle_group "legs/arms/core/full_body"
     }
-    
     EQUIPMENT {
         int equipment_key PK
         string equipment_name "treadmill/dumbbells/mat/bike"
         string equipment_type "machine/free_weight/bodyweight/outdoor"
         string brand
     }
-    
     LOCATION {
         int location_key PK
         string location_name "home/gym/park/trail"
