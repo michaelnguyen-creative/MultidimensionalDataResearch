@@ -1,0 +1,131 @@
+// ============================================
+// SNOWFLAKE SCHEMA: Workout Tracking System
+// ============================================
+
+// --------------------------------------------
+// FACT TABLE
+// --------------------------------------------
+Table WORKOUT_SESSION {
+  time_key int [ref: > TIME.time_key]
+  exercise_key int [ref: > EXERCISE.exercise_key]
+  equipment_key int [ref: > EQUIPMENT.equipment_key]
+  location_key int [ref: > LOCATION.location_key]
+  duration_minutes decimal [note: 'How long - MEASURE']
+  calories_burned int [note: 'Energy spent - MEASURE']
+  reps_completed int [note: 'Volume - MEASURE']
+  distance_km decimal [note: 'For cardio - MEASURE']
+  
+  Note: 'Central fact table containing workout session metrics'
+}
+
+// --------------------------------------------
+// TIME DIMENSION & SUB-DIMENSIONS
+// --------------------------------------------
+Table TIME {
+  time_key int [pk]
+  date date
+  day_of_week varchar
+  time_of_day varchar [note: 'morning/afternoon/evening']
+  month_key int [ref: > MONTH.month_key]
+  
+  Note: 'Time dimension - normalized to MONTH'
+}
+
+Table MONTH {
+  month_key int [pk]
+  month int
+  quarter int
+  season varchar [note: 'spring/summer/fall/winter']
+  year int
+  
+  Note: 'Temporal hierarchy: month/quarter/season/year'
+}
+
+// --------------------------------------------
+// EXERCISE DIMENSION & SUB-DIMENSIONS
+// --------------------------------------------
+Table EXERCISE {
+  exercise_key int [pk]
+  exercise_name varchar [note: 'running/pushups/yoga/cycling']
+  category_key int [ref: > EXERCISE_CATEGORY.category_key]
+  intensity_key int [ref: > INTENSITY_LEVEL.intensity_key]
+  muscle_group_key int [ref: > MUSCLE_GROUP.muscle_group_key]
+  
+  Note: 'Exercise dimension - normalized to category/intensity/muscle_group'
+}
+
+Table EXERCISE_CATEGORY {
+  category_key int [pk]
+  category varchar [note: 'cardio/strength/flexibility/sports']
+  
+  Note: 'Exercise type classification'
+}
+
+Table INTENSITY_LEVEL {
+  intensity_key int [pk]
+  intensity_level varchar [note: 'light/moderate/vigorous']
+  
+  Note: 'Exercise intensity lookup'
+}
+
+Table MUSCLE_GROUP {
+  muscle_group_key int [pk]
+  muscle_group varchar [note: 'legs/arms/core/full_body']
+  
+  Note: 'Target muscle group lookup'
+}
+
+// --------------------------------------------
+// EQUIPMENT DIMENSION & SUB-DIMENSIONS
+// --------------------------------------------
+Table EQUIPMENT {
+  equipment_key int [pk]
+  equipment_name varchar [note: 'treadmill/dumbbells/mat/bike']
+  equipment_type_key int [ref: > EQUIPMENT_TYPE.equipment_type_key]
+  brand_key int [ref: > BRAND.brand_key]
+  
+  Note: 'Equipment dimension - normalized to type/brand'
+}
+
+Table EQUIPMENT_TYPE {
+  equipment_type_key int [pk]
+  equipment_type varchar [note: 'machine/free_weight/bodyweight/outdoor']
+  
+  Note: 'Equipment classification'
+}
+
+Table BRAND {
+  brand_key int [pk]
+  brand varchar
+  
+  Note: 'Equipment manufacturer lookup'
+}
+
+// --------------------------------------------
+// LOCATION DIMENSION & SUB-DIMENSIONS
+// --------------------------------------------
+Table LOCATION {
+  location_key int [pk]
+  location_name varchar [note: 'home/gym/park/trail']
+  location_type varchar [note: 'indoor/outdoor']
+  facility_key int [ref: > FACILITY.facility_key]
+  city_key int [ref: > CITY.city_key]
+  
+  Note: 'Location dimension - normalized to facility/city'
+}
+
+Table FACILITY {
+  facility_key int [pk]
+  facility_name varchar [note: 'Planet_Fitness/Central_Park/etc']
+  
+  Note: 'Named facility/venue lookup'
+}
+
+Table CITY {
+  city_key int [pk]
+  city varchar
+  province_or_state varchar
+  country varchar
+  
+  Note: 'Geographic hierarchy'
+}
