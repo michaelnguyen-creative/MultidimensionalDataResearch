@@ -1,0 +1,67 @@
+// ============================================
+// STAR SCHEMA: Workout Tracking System
+// ============================================
+
+// --------------------------------------------
+// FACT TABLE (CENTER)
+// --------------------------------------------
+Table WORKOUT_SESSION {
+  time_key int [ref: > TIME.time_key]
+  exercise_key int [ref: > EXERCISE.exercise_key]
+  equipment_key int [ref: > EQUIPMENT.equipment_key]
+  location_key int [ref: > LOCATION.location_key]
+  duration_minutes decimal [note: 'How long - MEASURE']
+  calories_burned int [note: 'Energy spent - MEASURE']
+  reps_completed int [note: 'Volume - MEASURE']
+  distance_km decimal [note: 'For cardio - MEASURE']
+  
+  Note: 'Central fact table containing workout session metrics and foreign keys to dimensions'
+}
+
+// --------------------------------------------
+// DIMENSION TABLES (DENORMALIZED)
+// --------------------------------------------
+
+Table TIME {
+  time_key int [pk]
+  date date
+  day_of_week varchar
+  time_of_day varchar [note: 'morning/afternoon/evening']
+  month int
+  quarter int
+  season varchar [note: 'spring/summer/fall/winter']
+  year int
+  
+  Note: 'Time dimension - fully denormalized'
+}
+
+Table EXERCISE {
+  exercise_key int [pk]
+  exercise_name varchar [note: 'running/pushups/yoga/cycling']
+  category varchar [note: 'cardio/strength/flexibility/sports']
+  intensity_level varchar [note: 'light/moderate/vigorous']
+  muscle_group varchar [note: 'legs/arms/core/full_body']
+  
+  Note: 'Exercise dimension - fully denormalized'
+}
+
+Table EQUIPMENT {
+  equipment_key int [pk]
+  equipment_name varchar [note: 'treadmill/dumbbells/mat/bike']
+  equipment_type varchar [note: 'machine/free_weight/bodyweight/outdoor']
+  brand varchar
+  
+  Note: 'Equipment dimension - fully denormalized'
+}
+
+Table LOCATION {
+  location_key int [pk]
+  location_name varchar [note: 'home/gym/park/trail']
+  location_type varchar [note: 'indoor/outdoor']
+  city varchar
+  province_or_state varchar
+  country varchar
+  facility_name varchar [note: 'Planet_Fitness/Central_Park']
+  
+  Note: 'Location dimension - fully denormalized'
+}
