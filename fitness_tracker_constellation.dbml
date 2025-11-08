@@ -1,0 +1,164 @@
+// ============================================
+// FACT CONSTELLATION (GALAXY SCHEMA)
+// Fitness Tracking System - Multiple Fact Tables
+// ============================================
+
+// --------------------------------------------
+// FACT TABLE 1: Workout Sessions
+// --------------------------------------------
+Table WORKOUT_SESSION {
+  workout_id int [pk]
+  time_key int [ref: > TIME.time_key]
+  exercise_key int [ref: > EXERCISE.exercise_key]
+  equipment_key int [ref: > EQUIPMENT.equipment_key]
+  location_key int [ref: > LOCATION.location_key]
+  goal_key int [ref: > GOAL.goal_key]
+  duration_minutes decimal [note: 'MEASURE']
+  calories_burned int [note: 'MEASURE']
+  reps_completed int [note: 'MEASURE']
+  distance_km decimal [note: 'MEASURE']
+  
+  Note: 'Fact table: Individual workout session metrics'
+}
+
+// --------------------------------------------
+// FACT TABLE 2: Body Measurements
+// --------------------------------------------
+Table BODY_METRICS {
+  measurement_id int [pk]
+  time_key int [ref: > TIME.time_key]
+  location_key int [ref: > LOCATION.location_key]
+  weight_kg decimal [note: 'MEASURE']
+  body_fat_percentage decimal [note: 'MEASURE']
+  muscle_mass_kg decimal [note: 'MEASURE']
+  waist_circumference_cm decimal [note: 'MEASURE']
+  resting_heart_rate int [note: 'MEASURE']
+  
+  Note: 'Fact table: Body composition and health metrics over time'
+}
+
+// --------------------------------------------
+// FACT TABLE 3: Nutrition Log
+// --------------------------------------------
+Table NUTRITION_LOG {
+  meal_id int [pk]
+  time_key int [ref: > TIME.time_key]
+  location_key int [ref: > LOCATION.location_key]
+  meal_type_key int [ref: > MEAL_TYPE.meal_type_key]
+  food_key int [ref: > FOOD.food_key]
+  goal_key int [ref: > GOAL.goal_key]
+  calories_consumed int [note: 'MEASURE']
+  protein_grams decimal [note: 'MEASURE']
+  carbs_grams decimal [note: 'MEASURE']
+  fat_grams decimal [note: 'MEASURE']
+  serving_size decimal [note: 'MEASURE']
+  
+  Note: 'Fact table: Nutritional intake tracking'
+}
+
+// --------------------------------------------
+// FACT TABLE 4: Goal Progress
+// --------------------------------------------
+Table GOAL_PROGRESS {
+  progress_id int [pk]
+  time_key int [ref: > TIME.time_key]
+  goal_key int [ref: > GOAL.goal_key]
+  current_value decimal [note: 'MEASURE']
+  target_value decimal [note: 'MEASURE']
+  progress_percentage decimal [note: 'MEASURE']
+  days_remaining int [note: 'MEASURE']
+  
+  Note: 'Fact table: Fitness goal achievement tracking'
+}
+
+// --------------------------------------------
+// SHARED DIMENSION: Time
+// --------------------------------------------
+Table TIME {
+  time_key int [pk]
+  date date
+  day_of_week varchar
+  time_of_day varchar [note: 'morning/afternoon/evening/night']
+  month int
+  quarter int
+  season varchar
+  year int
+  is_weekend boolean
+  
+  Note: 'Shared dimension: Temporal attributes (shared by all fact tables)'
+}
+
+// --------------------------------------------
+// SHARED DIMENSION: Location
+// --------------------------------------------
+Table LOCATION {
+  location_key int [pk]
+  location_name varchar [note: 'home/gym/park/restaurant']
+  location_type varchar [note: 'indoor/outdoor']
+  city varchar
+  facility_name varchar
+  
+  Note: 'Shared dimension: Where activities occur (shared by workout/nutrition)'
+}
+
+// --------------------------------------------
+// SHARED DIMENSION: Goal
+// --------------------------------------------
+Table GOAL {
+  goal_key int [pk]
+  goal_name varchar [note: 'lose_weight/build_muscle/run_marathon']
+  goal_type varchar [note: 'weight_loss/strength/endurance/flexibility']
+  target_date date
+  difficulty_level varchar [note: 'easy/moderate/hard']
+  
+  Note: 'Shared dimension: Fitness objectives (shared by workout/nutrition/progress)'
+}
+
+// --------------------------------------------
+// DIMENSION: Exercise (workout-specific)
+// --------------------------------------------
+Table EXERCISE {
+  exercise_key int [pk]
+  exercise_name varchar
+  category varchar [note: 'cardio/strength/flexibility']
+  intensity_level varchar [note: 'light/moderate/vigorous']
+  muscle_group varchar [note: 'legs/arms/core/full_body']
+  
+  Note: 'Dimension: Exercise types (specific to WORKOUT_SESSION)'
+}
+
+// --------------------------------------------
+// DIMENSION: Equipment (workout-specific)
+// --------------------------------------------
+Table EQUIPMENT {
+  equipment_key int [pk]
+  equipment_name varchar
+  equipment_type varchar [note: 'machine/free_weight/bodyweight']
+  brand varchar
+  
+  Note: 'Dimension: Exercise equipment (specific to WORKOUT_SESSION)'
+}
+
+// --------------------------------------------
+// DIMENSION: Meal Type (nutrition-specific)
+// --------------------------------------------
+Table MEAL_TYPE {
+  meal_type_key int [pk]
+  meal_type varchar [note: 'breakfast/lunch/dinner/snack']
+  typical_time_range varchar [note: '7-9am/12-2pm/6-8pm']
+  
+  Note: 'Dimension: Meal categories (specific to NUTRITION_LOG)'
+}
+
+// --------------------------------------------
+// DIMENSION: Food (nutrition-specific)
+// --------------------------------------------
+Table FOOD {
+  food_key int [pk]
+  food_name varchar [note: 'chicken_breast/brown_rice/apple']
+  food_category varchar [note: 'protein/carb/fruit/vegetable']
+  is_whole_food boolean
+  is_processed boolean
+  
+  Note: 'Dimension: Food items (specific to NUTRITION_LOG)'
+}
